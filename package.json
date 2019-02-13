@@ -1,0 +1,25 @@
+{
+  "name": "employee-finder-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^1.18.10",
+    "postman": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronbenson27/Employee-Finder.git"
+  },
+  "author": "Aaron Benson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaronbenson27/Employee-Finder/issues"
+  },
+  "homepage": "https://github.com/aaronbenson27/Employee-Finder#readme"
+}
