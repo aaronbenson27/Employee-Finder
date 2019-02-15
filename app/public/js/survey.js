@@ -1,20 +1,24 @@
 const userInput = function () {
     let userSurvey = [];
-    for (i = 1; i <= 11; i++) {
-        if ($(`#question${i}`).val() !== undefined && $('#name').val() !== '' && $('#image').val() !== '') {
+    for (i = 1; i <= 10; i++) {
+        if ($(`#question${i}`).val() !== null && $('#name').val() !== '' && $('#image').val() !== '') {
             userSurvey.push($(`#question${i}`).val())
+            if (userSurvey.length === 10) {
+                $.ajax({
+                    url: "api/employees",
+                    method: "GET"
+                }).then(function (data) {
+                    compareSurvey(data, userSurvey)
+                })
+            }
         }
         else {
-            $('.modal-body').text(`Please answer all questions.`)
+            $('#alertBlock').empty();
+            $('#alertBlock').append(`<div id="error" class="alert alert-danger">Please fill out all fields before submitting!</div>`)
+            $(`.form-control`).val('');
+            break;
         }
     }
-    $.ajax({
-        url: "api/employees",
-        method: "GET"
-    }).then(function (data) {
-        compareSurvey(data, userSurvey)
-        console.log(userSurvey)
-    })
 }
 
 const compareSurvey = function (data, userSurvey) {
@@ -23,19 +27,23 @@ const compareSurvey = function (data, userSurvey) {
         let difference = 0
         for (j = 0; j < data[i].scores.length; j++) {
             difference += Math.abs(data[i].scores[j] - userSurvey[j])
-            
+
         }
         surveyDifference.push(difference)
     }
-
-    console.log(surveyDifference)
-    console.log(surveyDifference.indexOf(Math.min(surveyDifference)))
-    renderMatch(data, surveyDifference);
+    let index = 0
+    for (i = 1; i < surveyDifference.length; i++) {
+        if (surveyDifference[i] < surveyDifference[index]) {
+            index = i;
+        }
+    }
+    renderMatch(data, index);
     pushSurvey(userSurvey);
 }
 
-const renderMatch = function (data, surveyDifference) {
-
+const renderMatch = function (data, index) {
+    $('.modal-body').html(`<p>${data[index].name}</p><p><img id = "finalImage" src = ${data[index].photo}></p>`)
+    $('#myModal').modal('show')
 }
 
 const pushSurvey = function (userSurvey) {
@@ -45,13 +53,12 @@ const pushSurvey = function (userSurvey) {
         url: "/api/employees",
         method: "POST",
         data: {
-            name: nameVal,
-            photo: imageVal,
-            scores: userSurvey
-        },
-        datatype: JSON
-    }).then(function(data) {
-        console.log(data)
+            "name": nameVal,
+            "photo": imageVal,
+            "scores": userSurvey
+        }
+    }).then(function (data) {
+        $(`.form-control`).val('');
     })
 }
 

@@ -4,21 +4,17 @@ const app = express();
 
 const path = require('path')
 
-const apiRoutes = require('./routing/apiRoutes')(app)
-
-const htmlRoutes = require('./routing/htmlRoutes')
-
-const PORT = 8080;
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-htmlRoutes.homeHTML(app);
+require('./routing/apiRoutes')(app)
 
-htmlRoutes.surveyHTML(app)
+require('./routing/htmlRoutes')(app)
+
+const PORT = 8080;
 
 app.listen(PORT, function(){
   console.log(`App is now listening on PORT ${PORT}`)
