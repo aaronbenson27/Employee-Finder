@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "express": "^4.16.4",
+    "heroku": "^7.21.0",
     "nodemon": "^1.18.10",
     "postman": "^0.2.0"
   },
